@@ -1,1 +1,1 @@
-Display a pseudorandomly-selected, freely-licensed literary work.
+Display a pseudorandomly-selected, freely-licensed story.
