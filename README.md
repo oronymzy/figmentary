@@ -1,5 +1,5 @@
 # Storily
-Display a pseudorandomly-selected, freely-licensed story.
+Display a pseudorandomly-selected, freely-licensed story. Inspired by the [fortune](https://en.wikipedia.org/wiki/Fortune_(Unix)) program.
 
 | Note:
 |:-
