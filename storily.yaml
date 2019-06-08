@@ -7,6 +7,7 @@ six-word stories:
 - story: Brainy plant in flowerpot. Cultivating cognition.
   tag:
   - alliteration
+  - organism
 - story: Cable management? How could I knot.
   tag:
   - computing
@@ -15,19 +16,31 @@ six-word stories:
 - story: Cape, boots, and mask. Heroic wardrobe.
   tag:
   - fiction
+- story: CAPSLOCK. Not helpful in this case.
+  tag:
+  - computing
+  - pun
+  - wordplay
 - story: Comparing leaves on the phylogenetic tree.
   tag:
   - science
 - story: Computability, catharsis and cathode-ray tubes.
   tag:
+  - alliteration
   - computing
 - story: Dinosaur clumsiness. It's a saur subject.
   tag:
+  - organism
   - pun
   - wordplay
 - story: Doddering heroes luxuriate. Distant evil laughter.
   tag:
   - fiction
+- story: Drillbit-tipped appendages. Rock-solid excavation.
+  tag:
+  - fiction
+  - pun
+  - wordplay
 - story: Ensorceled villain. Prehensile hair. Frightened barber.
   tag:
   - fiction
@@ -35,6 +48,7 @@ six-word stories:
   tag:
   - fantasy
   - fiction
+  - organism
 - story: Flowery language blooms in the spring.
   tag:
   - wordplay
@@ -42,11 +56,39 @@ six-word stories:
   tag:
   - fantasy
   - fiction
+  - organism
+- story: Geometric breakdown. Shapes in bad shape.
+  tag:
+  - wordplay
+- story: Light barrier breakage? Not so fast!
+  tag:
+  - fiction
+  - pun
+  - science fiction
+  - wordplay
 - story: Muscles of carbon fiber. Motorized massage.
   tag:
   - alliteration
   - fiction
   - science fiction
+- story: Natural air circulation. Not a fan.
+  tag:
+  - pun
+  - wordplay
+- story: Post-petshop celebration. Raise the woof!
+  tag:
+  - alliteration
+  - pun
+  - wordplay
+- story: Rainfall-adapted infrastructure. Expect grate things.
+  tag:
+  - pun
+  - wordplay
+- story: Stripey flying insect? Bee more specific.
+  tag:
+  - organism
+  - pun
+  - wordplay
 - story: Tank treads over craters, under planetlight.
   tag:
   - fiction
@@ -57,8 +99,10 @@ six-word stories:
 - story: Viral invaders. Macroscopic. Boarding our ship.
   tag:
   - fiction
+  - organism
   - science fiction
 - story: Wyverns need help scratching those itches.
   tag:
   - fantasy
   - fiction
+  - organism
