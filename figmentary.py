@@ -20,7 +20,7 @@ if args.plus_t != None:
 else:
     required_tag = None
 
-with open("storily.yaml", "r") as opened_file:
+with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
     if tag_to_exclude != None:
         # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
