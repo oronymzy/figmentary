@@ -3,6 +3,7 @@ import random
 import ruamel.yaml
 import sys
 
+# Checking if optional 'colorful' module is available
 colorful_available = True
 try: import colorful
 except ImportError: colorful_available = False
@@ -18,8 +19,11 @@ parser.add_argument("-t", "--tag", dest="minus_t", help="exclude story by a spec
 parser.add_argument("+t", "++tag", dest="plus_t", help="only include story containing a specified tag", default=None)
 args = parser.parse_args()
 
+# Assignments to hold default values for maximizing output consistency
 display_story = True
 display_diagnostic_information = True
+
+# Code related to assignments to hold user-provided values begins
 
 if args.colorize == True:
     colorize_text = True
@@ -46,6 +50,8 @@ if args.diagnostic == True:
 else:
     display_diagnostic_information = False
 
+# Code related to assignments to hold user-provided values ends
+
 with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
     # Filtering six-word stories based on user input
@@ -63,24 +69,30 @@ with open("figmentary.yaml", "r") as opened_file:
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
         # Removing any list items in the 'six-word stories' list that do not contain the required tag
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if required_tag in list_item['tag']]
-    number_of_six_word_stories = len(contents_of_opened_file['six-word stories'])
-    if number_of_six_word_stories == 0:
+    sixws_count = len(contents_of_opened_file['six-word stories'])
+    if sixws_count == 0:
         # In this situation, no six-word stories remain
         exit()
+    # Displaying diagnostic information if so instructed by user input
     if display_diagnostic_information == True:
         yaml.dump(contents_of_opened_file, sys.stdout)
+        # Nothing more will be displayed now that diagnostic information has been displayed
         count_stories = False
         display_story = False
+    # Displaying story count if so instructed by user input
     if count_stories == True:
-        print("Story count:",number_of_six_word_stories)
-        # Do not display a story now that story-count-related information has been displayed
+        print("Story count:",sixws_count)
+        # A story will not be displayed now that story-count-related information has been displayed
         display_story = False
+    # Displaying a story if so instructed by user input
     if display_story == True:
-        random_6ws_index = random.randint(0,number_of_six_word_stories - 1)
+        random_sixws_index = random.randint(0,sixws_count - 1)
+        # Colorizing text of a story if so instructed by user input, and if the 'colorful' module is available
         if colorize_text == True and colorful_available == True:
             colorful.use_style('solarized')
             available_colors = ['yellow','orange','red','magenta','violet','blue','cyan','green']
             random_color_selection = random.choice(available_colors)
-            print(getattr(colorful, random_color_selection),contents_of_opened_file['six-word stories'][random_6ws_index]['story'])
+            print(getattr(colorful, random_color_selection),contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
+        # Displaying a story
         else:
-            print(contents_of_opened_file['six-word stories'][random_6ws_index]['story'])
+            print(contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
