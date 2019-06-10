@@ -1,5 +1,6 @@
 import argparse
 import random
+import re
 import ruamel.yaml
 import sys
 
@@ -15,6 +16,8 @@ parser = argparse.ArgumentParser(prefix_chars='-+')
 parser.add_argument("-c", "--colorize", help="display colorized text with a pseudorandomly-selected color (requires *colorful* package)", action="store_true")
 parser.add_argument("-C", "--count-stories", help="display a count of how many stories are available instead of displaying a story", action="store_true")
 parser.add_argument("-d", "--diagnostic", help="display diagnostic information instead of displaying a story", action="store_true")
+parser.add_argument("-r", "--regex", dest="minus_r", help="exclude story matching a specified regular expression", default=None)
+parser.add_argument("+r", "++regex", dest="plus_r", help="only include story matching a specified regular expression", default=None)
 parser.add_argument("-t", "--tag", dest="minus_t", help="exclude story by a specified tag", default=None)
 parser.add_argument("+t", "++tag", dest="plus_t", help="only include story containing a specified tag", default=None)
 args = parser.parse_args()
@@ -50,22 +53,41 @@ if args.diagnostic == True:
 else:
     display_diagnostic_information = False
 
+if args.minus_r != None:
+    regex_to_exclude = args.minus_r
+else:
+    regex_to_exclude = None
+
+if args.plus_r != None:
+    required_regex = args.plus_r
+else:
+    required_regex = None
+
 # Code related to assignments to hold user-provided values ends
 
 with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
-    # Filtering six-word stories based on user input
+    # Filtering six-wrod stories based on story content if so instructed by user input
+    if regex_to_exclude != None:
+        for current_dictionary in contents_of_opened_file['six-word stories'][:]:
+            if "story" in current_dictionary and re.search(regex_to_exclude, current_dictionary["story"]) != None:
+                contents_of_opened_file['six-word stories'].remove(current_dictionary)
+    if required_regex != None:
+        for current_dictionary in contents_of_opened_file['six-word stories'][:]:
+            if "story" in current_dictionary and re.search(required_regex, current_dictionary["story"]) == None:
+                contents_of_opened_file['six-word stories'].remove(current_dictionary)
+    # Filtering six-word stories based on tags if so instructed by user input
     if tag_to_exclude != None:
         # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
         changing_six_word_stories = contents_of_opened_file['six-word stories']
-        # Removing any list items in the 'six-word stories' list that do not contain a dictionary with 'tag' as a key
+        # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
         # Removing any list items in the 'six-word stories' list containing the tag to be excluded
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if tag_to_exclude not in list_item['tag']]
     if required_tag != None:
         # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
         changing_six_word_stories = contents_of_opened_file['six-word stories']
-        # Removing any list items in the 'six-word stories' list that do not contain a dictionary with 'tag' as a key
+        # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
         # Removing any list items in the 'six-word stories' list that do not contain the required tag
         changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if required_tag in list_item['tag']]
