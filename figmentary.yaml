@@ -58,11 +58,15 @@ six-word stories:
   - organism
 - story: Geometric breakdown. Shapes in bad shape.
   tag:
+  - geometry
   - wordplay
 - story: "Hydrology. There's nothing it can't dew."
   tag:
   - pun
   - science
+  - wordplay
+- story: "Invisibility surrounds. Clearly there's a problem."
+  tag:
   - wordplay
 - story: Light barrier breakage? Not so fast!
   tag:
@@ -87,6 +91,11 @@ six-word stories:
   - wordplay
 - story: Rainfall-adapted infrastructure. Expect grate things.
   tag:
+  - pun
+  - wordplay
+- story: Rectangles hiding among circles? Ask around.
+  tag:
+  - geometry
   - pun
   - wordplay
 - story: Stripey flying insect? Bee more specific.
