@@ -4,10 +4,15 @@ import re
 import ruamel.yaml
 import sys
 
-# Checking if optional 'colorful' module is available
-colorful_available = True
-try: import colorful
-except ImportError: colorful_available = False
+def check_colorful_availability():
+    "Import optional 'colorful' module, if available."
+    colorful_available = True
+    global colorful
+    try: import colorful
+    except ImportError: colorful_available = False
+    return colorful_available
+
+colorful_available = check_colorful_availability()
 
 yaml = ruamel.yaml.YAML()
 
