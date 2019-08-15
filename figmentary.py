@@ -105,38 +105,38 @@ with open("figmentary.yaml", "r") as opened_file:
         "Selectively remove six-word story list items, if so instructed by user input."
         def exclude_sixws_based_on_story_content(regex_to_exclude):
             "Exclude six-word stories with specific, regex-formatted story content."
-            if regex_to_exclude != None:
-                for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
-                    if "story" in interim_dictionary and re.search(regex_to_exclude, interim_dictionary["story"]) != None:
-                        contents_of_opened_file['six-word stories'].remove(interim_dictionary)
+            for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
+                if "story" in interim_dictionary and re.search(regex_to_exclude, interim_dictionary["story"]) != None:
+                    contents_of_opened_file['six-word stories'].remove(interim_dictionary)
         def include_sixws_based_on_story_content(required_regex):
             "Include only six-word stories with specific, regex-formatted story content."
-            if required_regex != None:
-                for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
-                    if "story" in interim_dictionary and re.search(required_regex, interim_dictionary["story"]) == None:
-                        contents_of_opened_file['six-word stories'].remove(interim_dictionary)
+            for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
+                if "story" in interim_dictionary and re.search(required_regex, interim_dictionary["story"]) == None:
+                    contents_of_opened_file['six-word stories'].remove(interim_dictionary)
         def exclude_sixws_based_on_tag(tag_to_exclude):
             "Exclude six-word stories with a specific tag."
-            if tag_to_exclude != None:
-                # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
-                changing_six_word_stories = contents_of_opened_file['six-word stories']
-                # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
-                changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
-                # Removing any list items in the 'six-word stories' list containing the tag to be excluded
-                changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if tag_to_exclude not in list_item['tag']]
+            # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
+            changing_six_word_stories = contents_of_opened_file['six-word stories']
+            # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
+            changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
+            # Removing any list items in the 'six-word stories' list containing the tag to be excluded
+            changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if tag_to_exclude not in list_item['tag']]
         def include_sixws_based_on_tag(required_tag):
             "Include only six-word stories with a specific tag."
-            if required_tag != None:
-                # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
-                changing_six_word_stories = contents_of_opened_file['six-word stories']
-                # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
-                changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
-                # Removing any list items in the 'six-word stories' list that do not contain the required tag
-                changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if required_tag in list_item['tag']]
-        exclude_sixws_based_on_story_content(regex_to_exclude)
-        include_sixws_based_on_story_content(required_regex)
-        exclude_sixws_based_on_tag(tag_to_exclude)
-        include_sixws_based_on_tag(required_tag)
+            # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
+            changing_six_word_stories = contents_of_opened_file['six-word stories']
+            # Removing any list items in the 'six-word stories' list that do not contain an optional dictionary with 'tag' as a key
+            changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
+            # Removing any list items in the 'six-word stories' list that do not contain the required tag
+            changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if required_tag in list_item['tag']]
+        if regex_to_exclude != None:
+            exclude_sixws_based_on_story_content(regex_to_exclude)
+        if required_regex != None:
+            include_sixws_based_on_story_content(required_regex)
+        if tag_to_exclude != None:
+            exclude_sixws_based_on_tag(tag_to_exclude)
+        if required_tag != None:
+            include_sixws_based_on_tag(required_tag)
     filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag)
     sixws_count = len(contents_of_opened_file['six-word stories'])
     if sixws_count == 0:
