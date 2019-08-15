@@ -137,11 +137,16 @@ with open("figmentary.yaml", "r") as opened_file:
             exclude_sixws_based_on_tag(tag_to_exclude)
         if required_tag != None:
             include_sixws_based_on_tag(required_tag)
-    filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag)
-    sixws_count = len(contents_of_opened_file['six-word stories'])
-    if sixws_count == 0:
-        # In this situation, no six-word stories remain
-        exit()
+        def get_sixws_count():
+            "Get six-word story count, terminating if the count is zero."
+            sixws_count = len(contents_of_opened_file['six-word stories'])
+            if sixws_count == 0:
+                exit()
+            return sixws_count
+        sixws_count = get_sixws_count()
+        return sixws_count
+    sixws_count = filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag)
+
     # Displaying diagnostic information if so instructed by user input
     if display_diagnostic_information == True:
         yaml.dump(contents_of_opened_file, sys.stdout)
