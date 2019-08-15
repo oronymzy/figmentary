@@ -101,15 +101,15 @@ tag_to_exclude = values_provided_by_user['tag to exclude']
 
 with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
-    # Filtering six-wrod stories based on story content if so instructed by user input
+    # Filtering six-word stories based on story content if so instructed by user input
     if regex_to_exclude != None:
-        for current_dictionary in contents_of_opened_file['six-word stories'][:]:
-            if "story" in current_dictionary and re.search(regex_to_exclude, current_dictionary["story"]) != None:
-                contents_of_opened_file['six-word stories'].remove(current_dictionary)
+        for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
+            if "story" in interim_dictionary and re.search(regex_to_exclude, interim_dictionary["story"]) != None:
+                contents_of_opened_file['six-word stories'].remove(interim_dictionary)
     if required_regex != None:
-        for current_dictionary in contents_of_opened_file['six-word stories'][:]:
-            if "story" in current_dictionary and re.search(required_regex, current_dictionary["story"]) == None:
-                contents_of_opened_file['six-word stories'].remove(current_dictionary)
+        for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
+            if "story" in interim_dictionary and re.search(required_regex, interim_dictionary["story"]) == None:
+                contents_of_opened_file['six-word stories'].remove(interim_dictionary)
     # Filtering six-word stories based on tags if so instructed by user input
     if tag_to_exclude != None:
         # Two separate list comprehensions are required in order to avoid checking for a tag in a non-existent 'tag' key
