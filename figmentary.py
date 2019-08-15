@@ -35,58 +35,59 @@ def allow_arguments():
 
     args = specify_arguments()
 
-    # Assignments to hold default values for maximizing output consistency
-    display_story = True
+    def assess_arguments(args):
+        "Determine if values provided by the user are valid, and assign values to variables, whether provided by the user or not."
+        
+        display_story = True
+        
+        if args.colorize == True:
+            colorize_text = True
+        else:
+            colorize_text = False
 
-    # Code related to assignments to hold user-provided values begins
+        if args.minus_t != None:
+            tag_to_exclude = args.minus_t
+        else:
+            tag_to_exclude = None
 
-    if args.colorize == True:
-        colorize_text = True
-    else:
-        colorize_text = False
+        if args.plus_t != None:
+            required_tag = args.plus_t
+        else:
+            required_tag = None
 
-    if args.minus_t != None:
-        tag_to_exclude = args.minus_t
-    else:
-        tag_to_exclude = None
+        if args.count_stories == True:
+            count_stories = True
+        else:
+            count_stories = False
 
-    if args.plus_t != None:
-        required_tag = args.plus_t
-    else:
-        required_tag = None
+        if args.diagnostic == True:
+            display_diagnostic_information = True
+        else:
+            display_diagnostic_information = False
 
-    if args.count_stories == True:
-        count_stories = True
-    else:
-        count_stories = False
+        if args.minus_r != None:
+            regex_to_exclude = args.minus_r
+        else:
+            regex_to_exclude = None
 
-    if args.diagnostic == True:
-        display_diagnostic_information = True
-    else:
-        display_diagnostic_information = False
-
-    if args.minus_r != None:
-        regex_to_exclude = args.minus_r
-    else:
-        regex_to_exclude = None
-
-    if args.plus_r != None:
-        required_regex = args.plus_r
-    else:
-        required_regex = None
-
-    # Code related to assignments to hold user-provided values ends
+        if args.plus_r != None:
+            required_regex = args.plus_r
+        else:
+            required_regex = None
+        
+        return {
+            'colorize text': colorize_text,
+            'count stories': count_stories,
+            'display story': display_story,
+            'display diagnostic information': display_diagnostic_information,
+            'regex to exclude': regex_to_exclude,
+            'required regex': required_regex,
+            'required tag': required_tag,
+            'tag to exclude': tag_to_exclude
+        }
     
-    return {
-        'colorize text': colorize_text,
-        'count stories': count_stories,
-        'display story': display_story,
-        'display diagnostic information': display_diagnostic_information,
-        'regex to exclude': regex_to_exclude,
-        'required regex': required_regex,
-        'required tag': required_tag,
-        'tag to exclude': tag_to_exclude
-    }
+    values_provided_by_user = assess_arguments(args)
+    return values_provided_by_user
 
 values_provided_by_user = allow_arguments()
 colorize_text = values_provided_by_user['colorize text']
