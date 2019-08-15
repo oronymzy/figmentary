@@ -102,7 +102,7 @@ tag_to_exclude = values_provided_by_user['tag to exclude']
 with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
     def filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag):
-        "Selectively remove six-word story list items, if so instructed by user input."
+        "Selectively remove six-word story list items, if so instructed by user input, then return a six-word story count."
         def exclude_sixws_based_on_story_content(regex_to_exclude):
             "Exclude six-word stories with specific, regex-formatted story content."
             for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
