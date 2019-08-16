@@ -90,18 +90,10 @@ def allow_arguments():
     return values_provided_by_user
 
 values_provided_by_user = allow_arguments()
-text_colorizing = values_provided_by_user['text colorizing']
-story_count_displaying = values_provided_by_user['story count displaying']
-story_displaying = values_provided_by_user['story displaying']
-diagnostic_information_displaying = values_provided_by_user['diagnostic information displaying']
-regex_to_exclude = values_provided_by_user['regex to exclude']
-required_regex = values_provided_by_user['required regex']
-required_tag = values_provided_by_user['required tag']
-tag_to_exclude = values_provided_by_user['tag to exclude']
 
 with open("figmentary.yaml", "r") as opened_file:
     contents_of_opened_file = yaml.load(opened_file)
-    def filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag):
+    def filter_sixws(values_provided_by_user):
         "Selectively remove six-word story list items, if so instructed by user input, then return a six-word story count."
         def exclude_sixws_based_on_story_content(regex_to_exclude):
             "Exclude six-word stories with specific, regex-formatted story content."
@@ -129,14 +121,14 @@ with open("figmentary.yaml", "r") as opened_file:
             changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if 'tag' in list_item]
             # Removing any list items in the 'six-word stories' list that do not contain the required tag
             changing_six_word_stories[:] = [list_item for list_item in changing_six_word_stories if required_tag in list_item['tag']]
-        if regex_to_exclude != None:
-            exclude_sixws_based_on_story_content(regex_to_exclude)
-        if required_regex != None:
-            include_sixws_based_on_story_content(required_regex)
-        if tag_to_exclude != None:
-            exclude_sixws_based_on_tag(tag_to_exclude)
-        if required_tag != None:
-            include_sixws_based_on_tag(required_tag)
+        if values_provided_by_user['regex to exclude'] != None:
+            exclude_sixws_based_on_story_content(values_provided_by_user['regex to exclude'])
+        if values_provided_by_user['required regex'] != None:
+            include_sixws_based_on_story_content(values_provided_by_user['required regex'])
+        if values_provided_by_user['tag to exclude'] != None:
+            exclude_sixws_based_on_tag(values_provided_by_user['tag to exclude'])
+        if values_provided_by_user['required tag'] != None:
+            include_sixws_based_on_tag(values_provided_by_user['required tag'])
         def get_sixws_count():
             "Get six-word story count, terminating if the count is zero."
             sixws_count = len(contents_of_opened_file['six-word stories'])
@@ -145,9 +137,9 @@ with open("figmentary.yaml", "r") as opened_file:
             return sixws_count
         sixws_count = get_sixws_count()
         return sixws_count
-    sixws_count = filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag)
+    sixws_count = filter_sixws(values_provided_by_user)
 
-    def control_display(sixws_count, diagnostic_information_displaying, story_count_displaying, story_displaying, text_colorizing, colorful_available):
+    def control_display(sixws_count, colorful_available, values_provided_by_user):
         "Control what content to display as command-line output, choosing one out of several mutually-exclusive possibilities."
         def display_diagnostic_information():
             "Display diagnostic information."
@@ -168,10 +160,10 @@ with open("figmentary.yaml", "r") as opened_file:
                 colorize_text(random_sixws_index)
             else:
                 print(contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
-        if diagnostic_information_displaying == True:
+        if values_provided_by_user['diagnostic information displaying'] == True:
             display_diagnostic_information()
-        elif story_count_displaying == True:
+        elif values_provided_by_user['story count displaying'] == True:
             display_story_count(sixws_count)
-        elif story_displaying == True:
-            display_story(sixws_count, text_colorizing)
-    control_display(sixws_count, diagnostic_information_displaying, story_count_displaying, story_displaying, text_colorizing, colorful_available)
+        elif values_provided_by_user['story displaying'] == True:
+            display_story(sixws_count, values_provided_by_user['text colorizing'])
+    control_display(sixws_count, colorful_available, values_provided_by_user)
