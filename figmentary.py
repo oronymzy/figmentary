@@ -38,12 +38,12 @@ def allow_arguments():
     def assess_arguments(args):
         "Determine if values provided by the user are valid, and assign values to variables, whether provided by the user or not."
         
-        display_story = True
+        story_displaying = True
         
         if args.colorize == True:
-            colorize_text = True
+            text_colorizing = True
         else:
-            colorize_text = False
+            text_colorizing = False
 
         if args.minus_t != None:
             tag_to_exclude = args.minus_t
@@ -56,14 +56,14 @@ def allow_arguments():
             required_tag = None
 
         if args.count_stories == True:
-            count_stories = True
+            story_count_displaying = True
         else:
-            count_stories = False
+            story_count_displaying = False
 
         if args.diagnostic == True:
-            display_diagnostic_information = True
+            diagnostic_information_displaying = True
         else:
-            display_diagnostic_information = False
+            diagnostic_information_displaying = False
 
         if args.minus_r != None:
             regex_to_exclude = args.minus_r
@@ -76,10 +76,10 @@ def allow_arguments():
             required_regex = None
         
         return {
-            'colorize text': colorize_text,
-            'count stories': count_stories,
-            'display story': display_story,
-            'display diagnostic information': display_diagnostic_information,
+            'text colorizing': text_colorizing,
+            'story count displaying': story_count_displaying,
+            'story displaying': story_displaying,
+            'diagnostic information displaying': diagnostic_information_displaying,
             'regex to exclude': regex_to_exclude,
             'required regex': required_regex,
             'required tag': required_tag,
@@ -90,10 +90,10 @@ def allow_arguments():
     return values_provided_by_user
 
 values_provided_by_user = allow_arguments()
-colorize_text = values_provided_by_user['colorize text']
-count_stories = values_provided_by_user['count stories']
-display_story = values_provided_by_user['display story']
-display_diagnostic_information = values_provided_by_user['display diagnostic information']
+text_colorizing = values_provided_by_user['text colorizing']
+story_count_displaying = values_provided_by_user['story count displaying']
+story_displaying = values_provided_by_user['story displaying']
+diagnostic_information_displaying = values_provided_by_user['diagnostic information displaying']
 regex_to_exclude = values_provided_by_user['regex to exclude']
 required_regex = values_provided_by_user['required regex']
 required_tag = values_provided_by_user['required tag']
@@ -147,26 +147,31 @@ with open("figmentary.yaml", "r") as opened_file:
         return sixws_count
     sixws_count = filter_sixws(regex_to_exclude, required_regex, tag_to_exclude, required_tag)
 
-    # Displaying diagnostic information if so instructed by user input
-    if display_diagnostic_information == True:
-        yaml.dump(contents_of_opened_file, sys.stdout)
-        # Nothing more will be displayed now that diagnostic information has been displayed
-        count_stories = False
-        display_story = False
-    # Displaying story count if so instructed by user input
-    if count_stories == True:
-        print("Story count:",sixws_count)
-        # A story will not be displayed now that story-count-related information has been displayed
-        display_story = False
-    # Displaying a story if so instructed by user input
-    if display_story == True:
-        random_sixws_index = random.randint(0,sixws_count - 1)
-        # Colorizing text of a story if so instructed by user input, and if the 'colorful' module is available
-        if colorize_text == True and colorful_available == True:
-            colorful.use_style('solarized')
-            available_colors = ['yellow','orange','red','magenta','violet','blue','cyan','green']
-            random_color_selection = random.choice(available_colors)
-            print(getattr(colorful, random_color_selection),contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
-        # Displaying a story
-        else:
-            print(contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
+    def control_display(sixws_count, diagnostic_information_displaying, story_count_displaying, story_displaying, text_colorizing, colorful_available):
+        "Control what content to display as command-line output, choosing one out of several mutually-exclusive possibilities."
+        def display_diagnostic_information():
+            "Display diagnostic information."
+            yaml.dump(contents_of_opened_file, sys.stdout)
+        def display_story_count(sixws_count):
+            "Display story count."
+            print("Story count:",sixws_count)
+        def display_story(sixws_count, text_colorizing):
+            "Display a pseudorandomly-selected story, optionally colorizing text based on user input and module availability."
+            def colorize_text(random_sixws_index):
+                "Colorize text with a pseudorandomly-selected color."
+                colorful.use_style('solarized')
+                available_colors = ['yellow','orange','red','magenta','violet','blue','cyan','green']
+                random_color_selection = random.choice(available_colors)
+                print(getattr(colorful, random_color_selection),contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
+            random_sixws_index = random.randint(0,sixws_count - 1)
+            if text_colorizing == True and colorful_available == True:
+                colorize_text(random_sixws_index)
+            else:
+                print(contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
+        if diagnostic_information_displaying == True:
+            display_diagnostic_information()
+        elif story_count_displaying == True:
+            display_story_count(sixws_count)
+        elif story_displaying == True:
+            display_story(sixws_count, text_colorizing)
+    control_display(sixws_count, diagnostic_information_displaying, story_count_displaying, story_displaying, text_colorizing, colorful_available)
