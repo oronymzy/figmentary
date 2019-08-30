@@ -98,6 +98,9 @@ six-word stories:
   - geometry
   - pun
   - wordplay
+- story: Snowy landscapes are just so cool.
+  tag:
+  - wordplay
 - story: Stripey flying insect? Bee more specific.
   tag:
   - organism
