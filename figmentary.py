@@ -36,7 +36,7 @@ def allow_arguments():
     args = specify_arguments()
 
     def assess_arguments(args):
-        "Determine if values provided by the user are valid, and assign values to variables, whether provided by the user or not."
+        "Determine if values provided by the user are valid, and assign values to control-variables, whether provided by the user or not."
         
         story_displaying = True
         
