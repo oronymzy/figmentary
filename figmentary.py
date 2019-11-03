@@ -30,6 +30,7 @@ def allow_arguments():
         parser.add_argument("+r", "++regex", dest="plus_r", help="only include stories with a specified regular expression", default=None)
         parser.add_argument("-t", "--tag", dest="minus_t", help="exclude any stories with a specified tag", default=None)
         parser.add_argument("+t", "++tag", dest="plus_t", help="only include stories with a specified tag", default=None)
+        parser.add_argument("-T", "--display-tags", help="display available tags", action="store_true")
         args = parser.parse_args()
         return args
 
@@ -54,7 +55,10 @@ def allow_arguments():
             required_tag = args.plus_t
         else:
             required_tag = None
-
+        if args.display_tags == True:
+            tags_displaying = True
+        else:
+            tags_displaying = False
         if args.count_stories == True:
             story_count_displaying = True
         else:
@@ -83,7 +87,8 @@ def allow_arguments():
             'regex to exclude': regex_to_exclude,
             'required regex': required_regex,
             'required tag': required_tag,
-            'tag to exclude': tag_to_exclude
+            'tag to exclude': tag_to_exclude,
+            'tags displaying': tags_displaying
         }
     
     values_provided_by_user = assess_arguments(args)
@@ -143,6 +148,14 @@ with open("figmentary.yaml", "r") as opened_file:
         def display_diagnostic_information():
             "Display diagnostic information."
             yaml.dump(contents_of_opened_file, sys.stdout)
+        def display_tags():
+            "Display available tags."
+            tags_for_displaying = set()
+            for interim_dictionary in contents_of_opened_file['six-word stories'][:]:
+                if "tag" in interim_dictionary:
+                    for interim_list_item in interim_dictionary['tag']:
+                        tags_for_displaying.add(interim_list_item)
+            print(sorted(tags_for_displaying))
         def display_story_count():
             "Display story count."
             sixws_count = filter_sixws(values_provided_by_user)
@@ -163,6 +176,8 @@ with open("figmentary.yaml", "r") as opened_file:
                 print(contents_of_opened_file['six-word stories'][random_sixws_index]['story'])
         if values_provided_by_user['diagnostic information displaying'] == True:
             display_diagnostic_information()
+        elif values_provided_by_user['tags displaying'] == True:
+            display_tags()
         elif values_provided_by_user['story count displaying'] == True:
             display_story_count()
         elif values_provided_by_user['story displaying'] == True:
