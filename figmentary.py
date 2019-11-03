@@ -137,18 +137,19 @@ with open("figmentary.yaml", "r") as opened_file:
             return sixws_count
         sixws_count = get_sixws_count()
         return sixws_count
-    sixws_count = filter_sixws(values_provided_by_user)
 
-    def control_display(sixws_count, colorful_available, values_provided_by_user):
+    def control_display(colorful_available, values_provided_by_user):
         "Control what content to display as command-line output, choosing one out of several mutually-exclusive possibilities."
         def display_diagnostic_information():
             "Display diagnostic information."
             yaml.dump(contents_of_opened_file, sys.stdout)
-        def display_story_count(sixws_count):
+        def display_story_count():
             "Display story count."
+            sixws_count = filter_sixws(values_provided_by_user)
             print("Story count:",sixws_count)
-        def display_story(sixws_count, text_colorizing):
+        def display_story(text_colorizing):
             "Display a pseudorandomly-selected story, optionally colorizing text based on user input and module availability."
+            sixws_count = filter_sixws(values_provided_by_user)
             def colorize_text(random_sixws_index):
                 "Colorize text with a pseudorandomly-selected color."
                 colorful.use_style('solarized')
@@ -163,7 +164,7 @@ with open("figmentary.yaml", "r") as opened_file:
         if values_provided_by_user['diagnostic information displaying'] == True:
             display_diagnostic_information()
         elif values_provided_by_user['story count displaying'] == True:
-            display_story_count(sixws_count)
+            display_story_count()
         elif values_provided_by_user['story displaying'] == True:
-            display_story(sixws_count, values_provided_by_user['text colorizing'])
-    control_display(sixws_count, colorful_available, values_provided_by_user)
+            display_story(values_provided_by_user['text colorizing'])
+    control_display(colorful_available, values_provided_by_user)
